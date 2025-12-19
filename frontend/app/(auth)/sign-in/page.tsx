@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { signInWithEmail } from "@/lib/actions/authActions";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export default function SignIn() {
   const router = useRouter();
@@ -24,9 +25,16 @@ export default function SignIn() {
   const onSubmit = async (data: SignInFormData) => {
     try {
       const result = await signInWithEmail(data);
-      if (result.success) router.push("/");
+      if (result.success) {
+        router.push("/");
+      } else {
+        toast.error(result.error || "Sign in failed");
+      }
     } catch (err) {
       console.log(err);
+      toast.error("Sign in failed", {
+        description: err instanceof Error ? err.message : "Failed to log in",
+      });
     }
   };
   return (
