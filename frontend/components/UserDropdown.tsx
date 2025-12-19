@@ -18,15 +18,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
 import NavItems from "./NavItems";
+import { signOut } from "@/lib/actions/authActions";
 
-export default function UserDropdown() {
+export default function UserDropdown({ user }: { user: User }) {
   const router = useRouter();
 
   const handleSignOut = async () => {
+    await signOut();
     router.push("/sign-in");
   };
 
-  const user = { name: "John", email: "contact@jsmastery.com" };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -37,7 +38,7 @@ export default function UserDropdown() {
           <Avatar className="h-8 w-8">
             {/* <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" /> */}
             <AvatarFallback className="bg-yellow-500 text-yellow-900 text-sm font-bold">
-              {user.name[0]}
+              {user?.name?.[0]}
             </AvatarFallback>
           </Avatar>
           <div className="hidden md:flex flex-col items-start">
